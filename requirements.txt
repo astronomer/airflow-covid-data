@@ -1,0 +1,4 @@
+kubernetes
+snowflake-sqlalchemy
+requests
+hvac
