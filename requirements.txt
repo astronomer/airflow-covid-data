@@ -2,3 +2,4 @@ kubernetes
 snowflake-sqlalchemy
 requests
 hvac
+snowflake-connector-python

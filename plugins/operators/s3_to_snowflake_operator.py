@@ -21,14 +21,13 @@ This module contains AWS S3 to Snowflake operator.
 """
 
 from airflow.models import BaseOperator
-from airflow.contrib.hooks.snowflake.hooks.snowflake import SnowflakeHook
+from airflow.contrib.hooks.snowflake_hook import SnowflakeHook
 from airflow.utils.decorators import apply_defaults
 
 
 class S3ToSnowflakeTransferOperator(BaseOperator):
     """
     Executes an COPY command to load files from s3 to Snowflake
-
     :param s3_keys: reference to a list of S3 keys
     :type s3_keys: list
     :param table: reference to a specific table in snowflake database
@@ -66,7 +65,7 @@ class S3ToSnowflakeTransferOperator(BaseOperator):
         self.autocommit = autocommit
         self.snowflake_conn_id = snowflake_conn_id
 
-[docs]    def execute(self, context):
+    def execute(self, context):
         snowflake_hook = SnowflakeHook(snowflake_conn_id=self.snowflake_conn_id)
 
         # Snowflake won't accept list of files it has to be tuple only.

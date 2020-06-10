@@ -1,8 +1,6 @@
 from airflow import DAG
 from airflow.operators.dummy_operator import DummyOperator
 from airflow.operators.python_operator import PythonOperator
-# from airflow.contrib.hooks.snowflake_hook import SnowflakeHook
-# from airflow.contrib.operators.snowflake_operator import SnowflakeOperator
 from airflow.hooks import S3Hook
 from datetime import datetime, timedelta
 import os
@@ -20,7 +18,7 @@ def upload_to_s3(endpoint, date):
     url = 'https://covidtracking.com/api/v1/states/'
 
     res = requests.get(url+'{0}/{1}.csv'.format(endpoint, date))
-    
+
     # Take string, upload to S3 using predefined method
     s3_hook.load_string(res.text, 'test_{0}.csv'.format(endpoint), bucket_name=BUCKET, replace=True)
 
@@ -33,10 +31,12 @@ default_args = {
     'retries': 1,
     'retry_delay': timedelta(minutes=5)
 }
-# Using a DAG context manager, you don't have to specify the dag property of each task
 
 endpoints = ['ca', 'co']
 date = '{{ ds_nodash }}'
+
+# Using a DAG context manager, you don't have to specify the dag property of each task
+
 with DAG('s3_covid',
          start_date=datetime(2019, 1, 1),
          max_active_runs=1,

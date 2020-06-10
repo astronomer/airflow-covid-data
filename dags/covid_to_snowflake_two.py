@@ -38,7 +38,7 @@ default_args = {
 
 endpoints = ['ca', 'co']
 date = '{{ ds_nodash }}'
-with DAG('s3_covid_snowflake',
+with DAG('s3_covid_snowflake_two',
          start_date=datetime(2019, 1, 1),
          max_active_runs=1,
          # https://airflow.apache.org/docs/stable/scheduler.html#dag-runs
@@ -50,15 +50,7 @@ with DAG('s3_covid_snowflake',
 
     t0 = DummyOperator(task_id='start')
 
-    snowflake = S3ToSnowflakeTransferOperator(
-        task_id='upload_to_snowflake'   ,
-        s3_keys=endpoints,
-        stage='my_s3_stage',
-        table='colardo_covid_three',
-        schema='covid',
-        file_format='covid_csv',
-        snowflake_conn_id="snowflake_test",
-    )
+    
 
     for endpoint in endpoints:
         generate_files = PythonOperator(
@@ -66,6 +58,15 @@ with DAG('s3_covid_snowflake',
             python_callable=upload_to_s3,
             op_kwargs={'endpoint': endpoint, 'date': date}
         )
+        snowflake = S3ToSnowflakeTransferOperator(
+        task_id='upload_{0}_snowflake'.format(endpoint),
+        s3_keys=endpoint,
+        stage='my_s3_stage',
+        table='{0}_data'.format(endpoint),
+        schema='covid',
+        file_format='covid_csv',
+        snowflake_conn_id="snowflake_test",
+    )
 
         t0 >> generate_files >> snowflake
 
