@@ -8,6 +8,10 @@ def get_secrets(**kwargs):
     conn = BaseHook.get_connection(kwargs['my_conn_id'])
     print(f"Password: {conn.password}, Login: {conn.login}, URI: {conn.get_uri()}, Host: {conn.host}")
 
+    conn_two = BaseHook.get_connection('s3')
+
+
+
 with DAG('example_secrets_dags', start_date=datetime(2020, 1, 1), schedule_interval=None) as dag:
 
 
