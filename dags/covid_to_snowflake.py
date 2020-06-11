@@ -67,10 +67,7 @@ with DAG('s3_covid_snowflake_two',
         table='state_data',
         schema='COVID_DEMO.covid',
         file_format='covid_data_csv',
-        snowflake_conn_id="snowflake_test",
+        snowflake_conn_id="snowflake",
     )
 
         t0 >> generate_files >> snowflake
-
-    
-    # get_count = PythonOperator(task_id="get_count", python_callable=row_count)
