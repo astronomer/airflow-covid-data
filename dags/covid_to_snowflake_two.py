@@ -36,7 +36,8 @@ default_args = {
 }
 # Using a DAG context manager, you don't have to specify the dag property of each task
 
-endpoints = ['ca', 'co']
+endpoints = ['ca', 'co', 'ny']
+
 date = '{{ ds_nodash }}'
 with DAG('s3_covid_snowflake_two',
          start_date=datetime(2019, 1, 1),
@@ -60,10 +61,10 @@ with DAG('s3_covid_snowflake_two',
         )
         snowflake = S3ToSnowflakeTransferOperator(
         task_id='upload_{0}_snowflake'.format(endpoint),
-        s3_keys=endpoint,
+        s3_keys=['{0}.csv'.format(endpoint)],
         stage='my_s3_stage',
-        table='{0}_data'.format(endpoint),
-        schema='covid',
+        table='colardo_covid_three',
+        schema='COVID_DEMO.covid',
         file_format='covid_csv',
         snowflake_conn_id="snowflake_test",
     )
