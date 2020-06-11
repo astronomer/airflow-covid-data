@@ -107,6 +107,5 @@ class S3ToSnowflakeTransferOperator(BaseOperator):
 
         self.log.info('Executing COPY command...')
         # snowflake_hook.run("USE WAREHOSE COVID_DEMO", self.autocommit)
-        print(snowflake_hook.get_uri())
         snowflake_hook.run(copy_query, self.autocommit)
         self.log.info("COPY command completed")
