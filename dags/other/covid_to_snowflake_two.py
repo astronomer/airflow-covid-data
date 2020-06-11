@@ -23,7 +23,7 @@ def upload_to_s3(endpoint, date):
 
     res = requests.get(url+'{0}/{1}.csv'.format(endpoint, date))
     # Take string, upload to S3 using predefined method
-    s3_hook.load_string(res.text, '{0}.csv'.format(endpoint), bucket_name=BUCKET, replace=True)
+    s3_hook.load_string(res.text, '{0}_{1}.csv'.format(endpoint, date), bucket_name=BUCKET, replace=True)
 
 # Default settings applied to all tasks
 default_args = {
@@ -59,13 +59,14 @@ with DAG('s3_covid_snowflake_two',
             python_callable=upload_to_s3,
             op_kwargs={'endpoint': endpoint, 'date': date}
         )
+
         snowflake = S3ToSnowflakeTransferOperator(
         task_id='upload_{0}_snowflake'.format(endpoint),
-        s3_keys=['{0}.csv'.format(endpoint)],
-        stage='my_s3_stage',
-        table='colardo_covid_three',
+        s3_keys=['{0}_{1}.csv'.format(endpoint, date)],
+        stage='covid_stage',
+        table='state_data',
         schema='COVID_DEMO.covid',
-        file_format='covid_csv',
+        file_format='covid_data_csv',
         snowflake_conn_id="snowflake_test",
     )
 

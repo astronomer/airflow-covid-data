@@ -43,6 +43,8 @@ class S3ToSnowflakeTransferOperator(BaseOperator):
     :param snowflake_conn_id: reference to a specific snowflake database
     :type snowflake_conn_id: str
     """
+    template_fields = ('s3_keys',)
+    
 
     @apply_defaults
     def __init__(self,
@@ -104,5 +106,7 @@ class S3ToSnowflakeTransferOperator(BaseOperator):
             )
 
         self.log.info('Executing COPY command...')
+        # snowflake_hook.run("USE WAREHOSE COVID_DEMO", self.autocommit)
+        print(snowflake_hook.get_uri())
         snowflake_hook.run(copy_query, self.autocommit)
         self.log.info("COPY command completed")
