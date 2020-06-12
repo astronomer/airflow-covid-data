@@ -37,7 +37,7 @@ date = '{{ ds_nodash }}'
 
 # Using a DAG context manager, you don't have to specify the dag property of each task
 
-with DAG('s3_covid',
+with DAG('covid_data_to_s3',
          start_date=datetime(2019, 1, 1),
          max_active_runs=1,
          # https://airflow.apache.org/docs/stable/scheduler.html#dag-runs

@@ -39,7 +39,7 @@ default_args = {
 endpoints = ['ca', 'co', 'ny']
 
 date = '{{ ds_nodash }}'
-with DAG('s3_covid_snowflake_two',
+with DAG('covid_data_s3_to_snowflake',
          start_date=datetime(2019, 1, 1),
          max_active_runs=1,
          # https://airflow.apache.org/docs/stable/scheduler.html#dag-runs
