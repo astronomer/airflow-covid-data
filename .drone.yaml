@@ -1,0 +1,23 @@
+pipeline:
+  build:
+    image: astronomerio/ap-build:0.0.7
+    commands:
+      - docker build -t registry.astro-demo.astronomer-trials.com/ecliptical-supernova-3133/airflow:ci-${DRONE_BUILD_NUMBER} .
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    when:
+      event: push
+      branch: [ master, release-* ]
+
+  push:
+    image: astronomerio/ap-build:0.0.7
+    commands:
+      - echo $${key}
+      - docker login registry.astro-demo.astronomer-trials.com -u _ -p $${ASTRO_API_KEY}
+      - docker push registry.astro-demo.astronomer-trials.com/ecliptical-supernova-3133/airflow:ci-${DRONE_BUILD_NUMBER}
+    secrets: [ key ]
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    when:
+      event: push
+      branch: [ master, release-* ]

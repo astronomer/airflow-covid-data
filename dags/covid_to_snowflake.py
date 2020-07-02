@@ -1,6 +1,7 @@
 from airflow import DAG
 from airflow.operators.dummy_operator import DummyOperator
 from airflow.operators.python_operator import PythonOperator
+from airflow.contrib.operators.snowflake_operator import SnowflakeOperator
 from plugins.operators.s3_to_snowflake_operator import S3ToSnowflakeTransferOperator
 from airflow.hooks import S3Hook
 from datetime import datetime, timedelta
@@ -36,16 +37,16 @@ default_args = {
 }
 # Using a DAG context manager, you don't have to specify the dag property of each task
 
-endpoints = ['ca', 'co', 'ny']
+endpoints = ['ca', 'co', 'ny', 'pa', 'xx', 'tt']
 
 date = '{{ ds_nodash }}'
 with DAG('covid_data_s3_to_snowflake',
-         start_date=datetime(2019, 1, 1),
-         max_active_runs=1,
+         start_date=datetime(2020, 6, 1),
+         max_active_runs=3,
          # https://airflow.apache.org/docs/stable/scheduler.html#dag-runs
          schedule_interval='@daily',
          default_args=default_args,
-         catchup=False  # enable if you don't want historical dag runs to run
+         catchup=True  # enable if you don't want historical dag runs to run
          ) as dag:
 
 
@@ -69,5 +70,9 @@ with DAG('covid_data_s3_to_snowflake',
         file_format='covid_data_csv',
         snowflake_conn_id="snowflake",
     )
+        # snowflake_query= SnowflakeOperator(...)
 
+
+    
+wa
         t0 >> generate_files >> snowflake
