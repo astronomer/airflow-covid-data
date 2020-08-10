@@ -2,6 +2,7 @@ from airflow import DAG
 from airflow.operators.dummy_operator import DummyOperator
 from airflow.operators.python_operator import PythonOperator
 from airflow.contrib.operators.snowflake_operator import SnowflakeOperator
+from airflow.contrib.
 from plugins.operators.s3_to_snowflake_operator import S3ToSnowflakeTransferOperator
 from airflow.hooks import S3Hook
 from datetime import datetime, timedelta
