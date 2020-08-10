@@ -1,0 +1,16 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest    
+    steps:
+    - uses: actions/checkout@v1
+    - name: Publish to Astronomer.io
+      uses: elgohr/Publish-Docker-Github-Action@2.6
+      with:
+        name: infrared-photon-7780/airflow:ci-${{ github.sha }}
+        username: _
+        password: ${{ secrets.SERVICE_ACOUNT_KEY }}
+        registry: registry.astro-demo.astronomer-trials.com
