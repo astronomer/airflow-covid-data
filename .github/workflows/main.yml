@@ -13,4 +13,4 @@ jobs:
         name: ${{ secrets.RELEASE_NAME }}/airflow:ci-${{ github.sha }}
         username: _
         password: ${{ secrets.SERVICE_ACCOUNT_KEY }}
-        registry: registry.astro-demo.astronomer-trials.com
+        registry: registry.demo-astro.astronomer-trials.com
