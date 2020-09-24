@@ -37,7 +37,7 @@ default_args = {
 }
 # Using a DAG context manager, you don't have to specify the dag property of each task
 
-endpoints = ['ca', 'co', 'ny', 'pa', 'xx', 'tt']
+endpoints = ['ca', 'co', 'ny', 'pa', 'tx', 'tn', 'ak', 'sc', 'md']
 
 date = '{{ ds_nodash }}'
 with DAG('covid_data_s3_to_snowflake',
