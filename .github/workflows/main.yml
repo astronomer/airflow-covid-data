@@ -7,7 +7,7 @@ on:
 jobs:
   dev-push:
     runs-on: ubuntu-latest
-    if: ${BRANCH_NAME} == 'dev'
+    if: contains(github.ref, "dev")
     steps:
     - uses: actions/checkout@v1
     - name: Push to registry
@@ -19,7 +19,7 @@ jobs:
           registry: registry.demo-astro.astronomer-trials.com
   prod-push:
     runs-on: ubuntu-latest
-    if: ${BRANCH_NAME} == 'main'
+    if: contains(github.ref, "main")
     steps:
     - uses: actions/checkout@v1
     - name: Push to registry
