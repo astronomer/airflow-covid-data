@@ -17,10 +17,12 @@ def upload_to_s3(endpoint, date):
     s3_hook = S3Hook(aws_conn_id=S3_CONN_ID)
 
     # Base URL
+
     url = 'https://covidtracking.com/api/v1/states/'
     # Grab data
 
     print(date)
+    
 
     res = requests.get(url+'{0}/{1}.csv'.format(endpoint, date))
     # Take string, upload to S3 using predefined method
