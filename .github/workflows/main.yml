@@ -2,9 +2,7 @@ name: CI
 
 on:
   push:
-    branch: [dev]
-  merge:
-    branch: [main]
+    branch: [dev, main]
 
 jobs:
   dev-push:
