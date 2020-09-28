@@ -34,7 +34,7 @@ default_args = {
     'retry_delay': timedelta(minutes=5)
 }
 
-endpoints = ['ca', 'co', 'ny', 'pa']
+endpoints = ['ca', 'co', 'ny', 'pa', 'oh']
 date = '{{ ds_nodash }}'
 
 # Using a DAG context manager, you don't have to specify the dag property of each task
