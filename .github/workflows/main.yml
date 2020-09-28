@@ -1,16 +1,25 @@
 name: CI
 
-on: [push]
+on:
+  push:
+    branch: [main, dev]
 
 jobs:
   build:
     runs-on: ubuntu-latest    
     steps:
     - uses: actions/checkout@v1
-    - name: Publish to Astronomer.io
+    - name: Push to registry
       uses: elgohr/Publish-Docker-Github-Action@2.6
-      with:
-        name: ${{ secrets.RELEASE_NAME }}/airflow:ci-${{ github.sha }}
-        username: _
-        password: ${{ secrets.SERVICE_ACCOUNT_KEY }}
-        registry: registry.demo-astro.astronomer-trials.com
+      if: ${BRANCH_NAME} == 'main'
+        with:
+          name: prod-de/airflow:ci-${{ github.sha }}
+          username: _
+          password: ${{ secrets.SERVICE_ACCOUNT_KEY }}
+          registry: registry.demo-astro.astronomer-trials.com
+      if: ${BRANCH_NAME} == 'dev'
+        with:
+          name: dev-de/airflow:ci-${{ github.sha }}
+          username: _
+          password: ${{ secrets.SERVICE_ACCOUNT_KEY }}
+          registry: registry.demo-astro.astronomer-trials.com
