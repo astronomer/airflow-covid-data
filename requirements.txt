@@ -3,4 +3,3 @@ snowflake-sqlalchemy
 requests
 hvac
 snowflake-connector-python
-apache-airflow-backport-providers-google

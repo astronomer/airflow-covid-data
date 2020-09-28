@@ -13,7 +13,7 @@ name = 'covid_data'  # swap your name here
 
 def upload_to_s3(endpoint, date):
     print("called function")
-    # Instanstiaute
+    # Instanstiate
     s3_hook = S3Hook(aws_conn_id=S3_CONN_ID)
 
     # Base URL
