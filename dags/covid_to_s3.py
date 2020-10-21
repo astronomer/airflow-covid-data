@@ -1,5 +1,6 @@
 from airflow import DAG
 from airflow.operators.dummy_operator import DummyOperator
+from airflow.operators.email_operator import EmailOperator
 from airflow.operators.python_operator import PythonOperator
 from airflow.hooks import S3Hook
 from datetime import datetime, timedelta
@@ -12,7 +13,7 @@ def upload_to_s3(endpoint, date):
 
     # Instanstiaute
     s3_hook = S3Hook(aws_conn_id=S3_CONN_ID)
-    print("Created Connectoin")
+    print("Created Connection")
     print(s3_hook.get_session())
     print(s3_hook)
 
@@ -36,6 +37,7 @@ default_args = {
 
 endpoints = ['ca', 'co', 'ny', 'pa', 'oh']
 date = '{{ ds_nodash }}'
+email_to = ["kenten@astronomer.io"]
 
 # Using a DAG context manager, you don't have to specify the dag property of each task
 
@@ -51,11 +53,18 @@ with DAG('covid_data_to_s3',
 
     t0 = DummyOperator(task_id='start')
 
+    send_email = EmailOperator(
+        task_id='send_email',
+        to=email_to,
+        subject='Covid to S3 DAG',
+        html_content='<p>The Covid to S3 DAG completed successfully. Files can now be found on S3. <p>'
+    )
+
     for endpoint in endpoints:
         generate_files = PythonOperator(
             task_id='generate_file_{0}'.format(endpoint),  # task id is generated dynamically
             python_callable=upload_to_s3,
             op_kwargs={'endpoint': endpoint, 'date': date}
         )
-
-        t0 >> generate_files
+        
+        t0 >> generate_files >> send_email
