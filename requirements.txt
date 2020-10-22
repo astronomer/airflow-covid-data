@@ -1,5 +1,5 @@
 kubernetes
-snowflake-sqlalchemy
-requests
 hvac
-snowflake-connector-python
+snowflake-connector-python==2.2.7
+snowflake-sqlalchemy==1.2.3
+requests==2.23.0
