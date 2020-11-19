@@ -13,10 +13,10 @@ jobs:
       uses: elgohr/Publish-Docker-Github-Action@2.6
       if: github.ref == 'refs/heads/dev'
       with:
-          name: dev-de/airflow:ci-${{ github.sha }}
+          name: dev-analytics-one/airflow:ci-${{ github.sha }}
           username: _
           password: ${{ secrets.SERVICE_ACCOUNT_KEY }}
-          registry: registry.demo-astro.astronomer-trials.com
+          registry: registry.astro.astronomerdemo.com
   prod-push:
     runs-on: ubuntu-latest
     steps:
@@ -25,7 +25,7 @@ jobs:
       uses: elgohr/Publish-Docker-Github-Action@2.6
       if: github.ref == 'refs/heads/main'
       with:
-          name: prod-de/airflow:ci-${{ github.sha }}
+          name: prod-analytics/airflow:ci-${{ github.sha }}
           username: _
           password: ${{ secrets.SERVICE_ACCOUNT_KEY }}
-          registry: registry.demo-astro.astronomer-trials.com
+          registry: registry.astro.astronomerdemo.com

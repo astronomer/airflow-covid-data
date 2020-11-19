@@ -35,9 +35,10 @@ default_args = {
     'retry_delay': timedelta(minutes=5)
 }
 
-endpoints = ['ca', 'co', 'ny', 'pa', 'oh']
+endpoints = ['ca', 'co', 'ny', 'pa', 'oh','tx','mo']
 date = '{{ ds_nodash }}'
 email_to = ["kenten@astronomer.io"]
+
 
 # Using a DAG context manager, you don't have to specify the dag property of each task
 

@@ -32,9 +32,10 @@ def upload_to_s3(endpoint, date):
 default_args = {
     'owner': 'airflow',
     'depends_on_past': False,
-    'email_on_failure': False,
+    'email_on_failure': True,
     'email_on_retry': False,
-    'retries': 1,
+    'email': ['viraj@astronomer.io'],
+    'retries': 0,
     'retry_delay': timedelta(minutes=5)
 }
 # Using a DAG context manager, you don't have to specify the dag property of each task
