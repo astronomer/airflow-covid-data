@@ -37,7 +37,7 @@ default_args = {
 
 endpoints = ['ca', 'co', 'ny', 'pa', 'oh','tx','mo']
 date = '{{ ds_nodash }}'
-
+email_to = ['viraj@astronomer.io']
 
 # Using a DAG context manager, you don't have to specify the dag property of each task
 
