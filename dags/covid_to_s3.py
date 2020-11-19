@@ -35,7 +35,7 @@ default_args = {
     'retry_delay': timedelta(minutes=5)
 }
 
-endpoints = ['ca', 'co', 'ny', 'pa', 'oh','tx','mo']
+endpoints = ['ca', 'co', 'ny', 'pa', 'oh','tx']
 date = '{{ ds_nodash }}'
 email_to = ['viraj@astronomer.io']
 
