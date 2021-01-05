@@ -2,7 +2,8 @@ from airflow import DAG
 from airflow.operators.dummy_operator import DummyOperator
 from airflow.operators.email_operator import EmailOperator
 from airflow.operators.python_operator import PythonOperator
-from airflow.hooks import S3Hook
+from airflow.providers.amazon.aws.hooks.s3 import S3Hook
+from airflow.utils.task_group import TaskGroup
 from datetime import datetime, timedelta
 import os
 import requests
@@ -35,7 +36,7 @@ default_args = {
     'retry_delay': timedelta(minutes=5)
 }
 
-endpoints = ['ca', 'co', 'ny', 'pa', 'oh']
+endpoints = ['ca', 'co', 'ny', 'pa']
 date = '{{ ds_nodash }}'
 email_to = ["kenten@astronomer.io"]
 
@@ -60,11 +61,12 @@ with DAG('covid_data_to_s3',
         html_content='<p>The Covid to S3 DAG completed successfully. Files can now be found on S3. <p>'
     )
 
-    for endpoint in endpoints:
-        generate_files = PythonOperator(
-            task_id='generate_file_{0}'.format(endpoint),  # task id is generated dynamically
-            python_callable=upload_to_s3,
-            op_kwargs={'endpoint': endpoint, 'date': date}
-        )
+    with TaskGroup('covid_task_group') as covid_group:
+        for endpoint in endpoints:
+            generate_files = PythonOperator(
+                task_id='generate_file_{0}'.format(endpoint),
+                python_callable=upload_to_s3,
+                op_kwargs={'endpoint': endpoint, 'date': date}
+            )
         
-        t0 >> generate_files >> send_email
+    t0 >> covid_group >> send_email
