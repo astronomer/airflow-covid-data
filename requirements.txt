@@ -4,3 +4,4 @@ snowflake-connector-python==2.2.7
 snowflake-sqlalchemy==1.2.3
 requests==2.23.0
 grpcio==1.31.0
+apache-airflow-providers-snowflake
